@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.netflix.discovery.converters.Auto;
 
 @RestController
-public class GreetController {
+public class ReceiverController {
 
 	@Autowired
-	private KafkaTemplate<String , Message> KafkaTemplate;
+	private KafkaTemplate<String, Message> kafkaTemplate;
 
 	// basic hello 
 	@GetMapping("/hello")
@@ -24,12 +24,11 @@ public class GreetController {
 		return new ResponseEntity<String>("Hello World", HttpStatus.OK);
 	}
 
-	
 	@GetMapping("/greet")
-	public ResponseEntity<String> greet() {
+	public ResponseEntity<String> greet(){
 		Message newMsg = new Message("test test message","admin",LocalDate.now());
-		KafkaTemplate.send("message",newMsg);
-		return new ResponseEntity<String>(newMsg.getText(),HttpStatus.OK);
+		kafkaTemplate.send("message", newMsg);
+		return new ResponseEntity<String>(newMsg.getText(), HttpStatus.OK);
 	}
 
 }
